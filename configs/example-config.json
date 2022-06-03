@@ -1,26 +1,25 @@
 {
     "discord": {
       "token": "Discordtoken",
-      "prefix": "!",
-      "verifymessage": "ID from verifymessage",
+      "verifymessage": "ID of the verification message",
       "channels": {
-        "log": "ID from logchannel",
+        "log": "ID of the logchannel",
         "commands": [
-          "ID from commandchannel"
+          "ID of the commandchannel"
         ],
         "modCommands": [
-          "ID from modchannel"
+          "ID of the modchannel"
         ],
         "adminCommands": [
-          "ID from adminchannel"
+          "ID of the adminchannel"
         ],
-        "clips": "ID from Clip-Channel",
-        "ignore": ["Id of an ignored channel"],
-        "standard": "ID from all-Channel",
-        "anfrage": "ID from anfrage-Channel",
-        "verificate": "ID from verify-Channel",
-        "voiceCategory": "ID from Clip-Category",
-        "textVoiceCategory": "ID from Clip-Category"
+        "clips": "ID of the clip-channel",
+        "ignore": ["ID of an ignored channel"],
+        "standard": "ID of the general messaging channel",
+        "anfrage": "ID of the anfrage-channel",
+        "verify": "ID of the verify-channel",
+        "voiceCategory": "ID of the voice category channel",
+        "textVoiceCategory": "ID of the text-voice category-channel"
       },
       "slashGuild": "DiscordServerID",
       "roles": {
@@ -31,7 +30,7 @@
         "noFilter": [
           "123"
         ],
-        "verify": "RoleID",
+        "verified": "RoleID",
         "mute": "RoleID",
         "dev": "RoleID",
         "mod": "RoleID"

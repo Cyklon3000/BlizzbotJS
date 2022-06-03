@@ -1,10 +1,11 @@
 import logger from "../modules/logger.js";
 import { checkMessage } from "./message.js";
+import config from "../modules/config.js";
 
 /**
- * @param  {import("../modules/DiscordClient").default} client
+ * @param  {import("discord.js").Client<true>} client
  * @param  {import("discord.js").Message} oldMessage
- * @param  {import("discord.js").Message} newMessage
+ * @param  {import("discord.js").Message<true>} newMessage
  */
 export async function handle(client, oldMessage, newMessage) {
     logger.silly("message edit received");
@@ -14,7 +15,7 @@ export async function handle(client, oldMessage, newMessage) {
     logger.silly("fetched possible partial message");
     // ignore webhooks
     if (newMessage.author.discriminator === "0000") return;
-    if (client.config.channels.ignore.includes(newMessage.channelId)) return;
+    if (config.discord.channels.ignore.includes(newMessage.channelId)) return;
     checkMessage(client, newMessage);
 }
 

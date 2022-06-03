@@ -11,7 +11,7 @@ It requires the following:
 
 - `git` command line ([Windows](https://git-scm.com/download/win)|[Linux](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)|[MacOS](https://git-scm.com/download/mac)) installed
 - [Nodejs 16.0.0 or higher](http://nodejs.org/)
-- A Postgres instance. The installation for Windows and MacOS is found at [Installation Guide](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads), for Linux use your package manager.
+- A Postgres instance. The installation for Windows and macOS is found at [Installation Guide](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads), for Linux use your package manager.
 <details>
 <summary>example for Debian+Ubuntu</summary>
 

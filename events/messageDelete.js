@@ -1,12 +1,13 @@
 import { MessageEmbed } from "discord.js";
 import logger from "../modules/logger.js";
+import ctx from "../modules/ctx.js";
 
 const disabled = false;
 const name = "messageDelete";
 
 /**
- * @param  {import("../modules/DiscordClient").default} client
- * @param  {import("discord.js").Message} message
+ * @param  {import("discord.js").Client<true>} client
+ * @param  {import("discord.js").Message<true>} message
  */
 async function handle(client, message) {
     if (!message.guild) return;
@@ -17,13 +18,9 @@ async function handle(client, message) {
         .addField("Channel", message.channel.name || "Channel unbekannt???", true);
     if (message.author?.avatar) embed.setThumbnail(message.author.avatarURL({ dynamic: true }));
     embed.addField("Inhalt", message.content?.slice(0, 1000) || "Inhalt nicht auslesbar", false);
-    if (client.logChannel) {
-        if (!client.logChannel.isText()) {
-            return logger.warn(`Deleted message as the log channel is not text based:
-        ${message.content || "Inhalt nicht auslesbar"}
-        by ${message.author.tag} in ${message.channel.name} (${message.guild.name})`);
-        }
-        client.logChannel.send({ embeds: [embed] }).catch((e) => {
+    const logChannel = await ctx.getLogChannel();
+    if (logChannel) {
+        logChannel.send({ embeds: [embed] }).catch((e) => {
             logger.error(`Could not send deleted message to the log channel: ${e.message}
                 ${e.stack}
                 

@@ -1,37 +1,19 @@
-import { Console } from "console";
-import { existsSync, readdirSync } from "fs";
-import { sep } from "path";
 import { PassThrough } from "stream";
-import { MCUser } from "./db.js";
 import logger from "./logger.js";
+import MCUser from "./DBModels/MCUser.js";
+import config from "./config.js";
+import ctx from "./ctx.js";
+import * as Console from "node:console";
 
 /**
- * @param  {string} path the command directory
- * @param  {import("discord.js").Collection} commandMap the map to store the loaded commands into
- */
-async function loadCommands(path, commandMap) {
-    if (!existsSync(path)) throw new Error(`The given command directory ${path} does not exist.`);
-    const commandFiles = readdirSync(path);
-    commandFiles.forEach(async (fileName) => {
-        if (!fileName.endsWith(".js")) return;
-        logger.silly(`reading command file at ${path}${sep}${fileName}`);
-        const cmd = await import(`..${sep}${path}${sep}${fileName}`);
-        const name = fileName.split(".")[0];
-        if (!cmd) return logger.warn(`Command ${name} does not exist.`);
-        if (cmd.disabled) return logger.warn(`Command ${name} is disabled.`);
-        commandMap.set(name, cmd);
-    });
-
-}
-/**
- * @param  {import("./DiscordClient.js").default} client
- * @param  {import("discord.js").Message} message
+ * @param  {import("discord.js").Client<true>} client
+ * @param  {import("discord.js").Message<true>} message
  */
 async function checkWhitelist(client, message) {
     const guild = message.guild;
     const members = await guild.members.fetch();
-    const ytroles = client.config.roles.whitelist.youtube;
-    const twroles = client.config.roles.whitelist.twitch;
+    const ytroles = config.discord.roles.whitelist.youtube;
+    const twroles = config.discord.roles.whitelist.twitch;
     members.forEach((member) => {
         MCUser.upsert({
             discordId: member.id,
@@ -40,21 +22,10 @@ async function checkWhitelist(client, message) {
         }, {});
     });
 }
-/**
- * @param {import("events").EventEmitter} listener
- * @param {import("fs").PathLike} directory
- */
-async function loadEvents(listener, directory) {
-    const eventFiles = readdirSync(directory);
-    eventFiles.forEach(async (file) => {
-        if (!file.endsWith(".js")) return logger.warn(`${directory}${sep}${file} is not a javascript file and does not belong in the event directory`);
-        const event = await import(`..${sep}${directory}${sep}${file}`);
-        if (event.disabled) return logger.info(`Event ${directory}${sep}${file} is disabled.`);
-        if (!event.handle || !event.name) return logger.error(`Event ${directory}${sep}${file} does not have a handle and a name property.`);
-        listener.on(event.name, event.handle.bind(null, listener));
-    });
-}
 
+/**
+ * @enum
+ */
 const permissions = {
     user: 0,
     twitchsub: 1,
@@ -63,9 +34,10 @@ const permissions = {
     owner: 9,
     dev: 10,
 };
+
 /**
- * @param  {import("./DiscordClient.js").default} client
- * @param  {import("discord.js").Message} message
+ * @param  {import("discord.js").Client<true>} client
+ * @param  {import("discord.js").Message<true>} message
  * @param  {string[]} args
  * @returns {import("discord.js").User}
  */
@@ -84,12 +56,16 @@ function getUser(client, message, args) {
     return user;
 }
 
-const ts = new PassThrough({ transform(chunk, enc, cb) { cb(null, chunk); } });
+const ts = new PassThrough({
+    transform(chunk, enc, cb) {
+        cb(null, chunk);
+    },
+});
 const customConsole = new Console({ stdout: ts });
 
 /**
  * @param  {any[]} list
- * @returns {string} the table as shown using console.table
+ * @returns {string} the table as shown using `console.table`
  */
 function createTable(list) {
     customConsole.table(list);
@@ -97,13 +73,14 @@ function createTable(list) {
 }
 
 /**
- * @param  {import("./DiscordClient").default} client
+ * @param  {import("discord.js").Client<true>} client
  * @param  {string} username
  */
-function verify(client, username) {
-    if (!client.welcomeTexts || client.welcomeTexts.length === 0) return logger.silly("There are no welcome messages.");
-    const msg = client.welcomeTexts[Math.floor(Math.random() * client.welcomeTexts.length)].replace(/Name/g, `**${username}**`);
-    client.standardChannel.send({ content: msg });
+async function verify(client, username) {
+    if (!ctx.welcomeTexts || ctx.welcomeTexts.length === 0) return logger.silly("There are no welcome messages.");
+    const msg = ctx.welcomeTexts[Math.floor(Math.random() * ctx.welcomeTexts.length)].replace(/Name/g, `**${username}**`);
+    await ctx.standardChannel.send({ content: msg });
 }
 
-export { loadCommands, loadEvents, checkWhitelist, permissions, getUser, createTable, verify };
+
+export { checkWhitelist, permissions, getUser, createTable, verify };

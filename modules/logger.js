@@ -48,7 +48,9 @@ if (!(["", "0"].includes(process.env.DEBUG))) {
         level: "silly",
     }));
 }
-process.on("uncaughtException", error => logger.error(error));
+process.on("uncaughtException", error => logger.error(`Uncaught exception: ${error.name}
+${error.message}
+${error.stack}`));
 
 export default logger;
 logger.info(`The current Loglevel is ${process.env.DEBUG}`);
