@@ -5,6 +5,10 @@ import { permissions } from "./utils.js";
  */
 export class Command {
     perm = permissions.user;
+
+    /**
+     * @return import("@discordjs/builders").SlashCommandBuilder | Omit<import("@discordjs/builders").SlashCommandBuilder>
+     */
     register() {
         throw new Error("Not implemented");
     }
@@ -12,6 +16,7 @@ export class Command {
     /**
      *
      * @param {import("discord.js").CommandInteraction<"cached">} interaction
+     * @return void
      */
     // eslint-disable-next-line no-unused-vars
     execute(interaction) {

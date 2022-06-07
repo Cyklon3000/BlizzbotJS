@@ -13,7 +13,7 @@ async function loadCommands(path, commandMap) {
         const name = fileName.split(".")[0];
         const filePath = `./${path}/${fileName}`;
         logger.silly(`reading command file at ${filePath}`);
-        const cmd = await import(`../../${filePath}`);
+        const { default: cmd } = await import(`../../${filePath}`);
         if (!cmd) return logger.warn(`Command ${name} does not exist.`);
         if (cmd.disabled) return logger.warn(`Command ${name} is disabled.`);
         commandMap.set(name, cmd);

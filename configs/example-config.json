@@ -1,7 +1,7 @@
 {
     "discord": {
       "token": "Discordtoken",
-      "verifymessage": "ID of the verification message",
+      "verificationMessage": "ID of the verification message",
       "channels": {
         "log": "ID of the logchannel",
         "commands": [
@@ -17,7 +17,7 @@
         "ignore": ["ID of an ignored channel"],
         "standard": "ID of the general messaging channel",
         "anfrage": "ID of the anfrage-channel",
-        "verify": "ID of the verify-channel",
+        "verification": "ID of the verify-channel",
         "voiceCategory": "ID of the voice category channel",
         "textVoiceCategory": "ID of the text-voice category-channel"
       },
@@ -27,27 +27,28 @@
           "youtube": ["RoleID"],
           "twitch": ["RoleID"]
         },
-        "noFilter": [
+        "noLinkFilter": [
+          "123"
+        ],
+        "noBlacklist": [
           "123"
         ],
         "verified": "RoleID",
-        "mute": "RoleID",
         "dev": "RoleID",
         "mod": "RoleID"
       },
       "emojis": {
-        "left": "ID from emote",
-        "right": "ID from emote",
-        "randomReaction": "Id from randomemote"
+        "left": "ID of emote",
+        "right": "ID of emote",
+        "randomReaction": "Id of randomemote"
       }
     },
     "database": {
-      "host": "localhost",
+      "host": "Postgresql Database Host",
       "port": "port",
-      "user": "MySQL Database User",
+      "user": "Postgresql Database User",
       "database": "Database Name",
-      "password": "MySQL Database Password",
-      "type": "postgres"
+      "password": "Postgresql Database Password"
     },
     "pterodactyl": {
       "host": "host from Panel",

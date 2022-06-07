@@ -36,6 +36,8 @@ class Ctx {
     welcomeTexts = ensureFile("configs/welcome.txt") && readFileSync("configs/welcome.txt", "utf-8").split(EOL).filter((word) => word !== "");
     _logChannel = null;
     _anfrageChannel = null;
+    _standardChannel = null;
+    _verificationChannel = null;
 
     /**
      *
@@ -60,6 +62,32 @@ class Ctx {
         if (!channel) return null;
         if (!(channel instanceof TextChannel)) return null;
         this._anfrageChannel = channel;
+        return channel;
+    }
+
+    /**
+     *
+     * @returns {Promise<null|TextChannel>}
+     */
+    async getStandardChannel() {
+        if (this._standardChannel) return this._standardChannel;
+        const channel = await client.channels.fetch(config.discord.channels.standard);
+        if (!channel) return null;
+        if (!(channel instanceof TextChannel)) return null;
+        this._standardChannel = channel;
+        return channel;
+    }
+
+    /**
+     *
+     * @returns {Promise<null|TextChannel>}
+     */
+    async getVerificationChannel() {
+        if (this._verificationChannel) return this._verificationChannel;
+        const channel = await client.channels.fetch(config.discord.channels.verification);
+        if (!channel) return null;
+        if (!(channel instanceof TextChannel)) return null;
+        this._verificationChannel = channel;
         return channel;
     }
 

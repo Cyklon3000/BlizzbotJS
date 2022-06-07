@@ -9,17 +9,6 @@
     "sourceType": "module"
   },
   "rules": {
-    "indent": [
-      2,
-      4,
-      {
-        "SwitchCase": 1
-      }
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
     "arrow-spacing": [
       "warn",
       {
@@ -43,6 +32,17 @@
       "property"
     ],
     "handle-callback-err": "off",
+    "indent": [
+      "error",
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
     "keyword-spacing": "error",
     "max-nested-callbacks": [
       "error",
@@ -84,40 +84,13 @@
     ],
     "no-var": "error",
     "prefer-const": "error",
+    "quotes": [
+      "error",
+      "double"
+    ],
     "semi": [
       "error",
       "always"
-    ],
-    "sort-imports": [
-      "error",
-      {
-        "ignoreCase": true,
-        "ignoreDeclarationSort": true,
-        "ignoreMemberSort": false,
-        "allowSeparatedGroups": false,
-        "memberSyntaxSortOrder": [
-          "none",
-          "all",
-          "multiple",
-          "single"
-        ]
-      }
-    ],
-    "space-before-blocks": "error",
-    "space-before-function-paren": [
-      "error",
-      {
-        "anonymous": "never",
-        "named": "never",
-        "asyncArrow": "always"
-      }
-    ],
-    "space-in-parens": "off",
-    "space-infix-ops": "error",
-    "space-unary-ops": "error",
-    "spaced-comment": "error",
-    "valid-jsdoc": "off",
-    "yoda": "error",
-    "prefer-template": "warn"
+    ]
   }
 }

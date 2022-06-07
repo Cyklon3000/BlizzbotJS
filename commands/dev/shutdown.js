@@ -1,22 +1,28 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { context } from "../../blizzbot.js";
 import { permissions } from "../../modules/utils.js";
+import { Command } from "../../modules/command.js";
 
-const perm = permissions.dev;
+class Shutdown extends Command {
+    perm = permissions.dev;
 
-/**
- * @param  {import("discord.js").Client<true>} client
- * @param  {import("discord.js").CommandInteraction<"cached">} interaction
- */
-async function run(client, interaction) {
-    await interaction.reply(interaction.locale === "de" ? "Der Bot fährt herunter." : "Shutting down...");
-    context.stop();
+    /**
+     * @param  {import("discord.js").CommandInteraction<"cached">} interaction
+     */
+    async execute(interaction) {
+        await interaction.reply(interaction.locale === "de" ? "Der Bot fährt herunter." : "Shutting down...");
+        context.stop();
+    }
+
+    register() {
+        return new SlashCommandBuilder()
+            .setDMPermission(false)
+            .setDefaultMemberPermissions(false)
+            .setName("shutdown")
+            .setDescription("stop the bot")
+            .setDescriptionLocalization("de", "Fährt den Bot runter");
+
+    }
 }
 
-const setup = new SlashCommandBuilder()
-    .setDefaultPermission(false)
-    .setName("shutdown")
-    .setDescription("stop the bot")
-    .setDescriptionLocalization("de", "Fährt den Bot runter").toJSON();
-
-export { perm, run, setup };
+export default new Shutdown();

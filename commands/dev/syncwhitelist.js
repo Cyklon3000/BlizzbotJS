@@ -1,22 +1,27 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { permissions } from "../../modules/utils.js";
 import ctx from "../../modules/ctx.js";
+import { Command } from "../../modules/command.js";
 
-const perm = permissions.dev;
+class Syncwhitelist extends Command {
+    perm = permissions.dev;
 
-/**
- * @param  {import("discord.js").Client<true>} client
- * @param  {import("discord.js").CommandInteraction<"cached">} interaction
- */
-async function run(client, interaction) {
-    await ctx.syncWhitelist();
-    await interaction.reply(interaction.locale === "de" ? "Die Whitelist wurde synchronisiert." : "The whitelist has been synced.");
+    /**
+     * @param  {import("discord.js").CommandInteraction<"cached">} interaction
+     */
+    async execute(interaction) {
+        await ctx.syncWhitelist();
+        await interaction.reply(interaction.locale === "de" ? "Die Whitelist wurde synchronisiert." : "The whitelist has been synced.");
+    }
+
+    register() {
+        return new SlashCommandBuilder()
+            .setDMPermission(false)
+            .setDefaultMemberPermissions(false)
+            .setName("syncwhitelist")
+            .setDescription("synchronizes the whitelist")
+            .setDescriptionLocalization("de", "Synchronisiert die Whitelist");
+    }
 }
 
-const setup = new SlashCommandBuilder()
-    .setDefaultPermission(false)
-    .setName("syncwhitelist")
-    .setDescription("synchronizes the whitelist")
-    .setDescriptionLocalization("de", "Synchronisiert die Whitelist").toJSON();
-
-export { perm, run, setup };
+export default new Syncwhitelist();

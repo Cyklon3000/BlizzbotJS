@@ -1,11 +1,10 @@
 import Alias from "../../../modules/DBModels/Alias.js";
 
 /**
- * @param  {import("discord.js").Client<true>} client
  * @param  {import("discord.js").CommandInteraction<"cached">} interaction
  * @param  {"command"|"customcommand"} type
  */
-export async function addAlias(client, interaction, type) {
+export async function addAlias(interaction, type) {
     const alias = interaction.options.getString("name", true);
     const command = interaction.options.getString("command", true);
     await Alias.create({

@@ -6,34 +6,30 @@ import ctx from "../modules/ctx.js";
 
 export const name = "ready";
 export const disabled = false;
-
-/**
- * @param  {import("discord.js").DiscordAPIError} e
- */
-function handleChannelFetchError(e) {
-    logger.error(`Received an error fetching the log channel: ${e.name} - ${e.message}`);
-}
-
+let warnedNoVerificationChannel = false;
 export async function handle(client) {
     logger.info("The bot just started.");
-    const verificationChannel = await client.channels.fetch(config.discord.channels.verify, { cache: true }).catch(handleChannelFetchError);
-    if (!verificationChannel || !verificationChannel.isText()) {
-        logger.warn("The verificate channel supplied in the config file is not a text channel.");
+    const verificationChannel = await ctx.getVerificationChannel();
+    if (!verificationChannel) {
+        if (!warnedNoVerificationChannel) {
+            logger.warn("No verification channel was found. This is not a problem, but it may cause problems later.");
+            warnedNoVerificationChannel = true;
+        }
         return;
     }
     await verificationChannel.messages.fetch(config.discord.verificationMessage);
-    ctx.logChannel = await client.channels.fetch(config.discord.channels.log, { cache: true }).catch(handleChannelFetchError);
-    if (!ctx.logChannel || !ctx.logChannel.isText()) {
+    const logChannel = await ctx.getLogChannel();
+    if (!logChannel || !logChannel.isText()) {
         logger.warn("The log channel supplied in the config file is not a text channel.");
         return;
     }
-    ctx.anfrageChannel = await client.channels.fetch(config.discord.channels.anfrage, { cache: true }).catch(handleChannelFetchError);
-    if (!ctx.anfrageChannel || !ctx.anfrageChannel.isText()) {
-        logger.warn("The Anfrage channel supplied in the config file is not a text channel.");
+    const anfrageChannel = await ctx.getAnfrageChannel();
+    if (!anfrageChannel || !anfrageChannel.isText()) {
+        logger.warn("The 'Anfrage' channel supplied in the config file is not a text channel.");
         return;
     }
-    ctx.standardChannel = await client.channels.fetch(config.discord.channels.standard, { cache: true }).catch(handleChannelFetchError);
-    if (!ctx.standardChannel || !ctx.standardChannel.isText()) {
+    const standardChannel = await ctx.getStandardChannel();
+    if (!standardChannel || !standardChannel.isText()) {
         logger.warn("The 'standard' channel supplied in the config file is not a text channel.");
         return;
     }

@@ -5,12 +5,12 @@ import logger from "./logger.js";
  * @property {string} token
  * @property {import("discord.js").Snowflake} slashGuild
  * @property {import("discord.js").Snowflake} verificationMessage
- * @property {import("discord.js").Snowflake} channels.adminCommands
+ * @property {import("discord.js").Snowflake[]} channels.adminCommands
  * @property {import("discord.js").Snowflake} channels.anfrage
  * @property {import("discord.js").Snowflake} channels.clips
- * @property {import("discord.js").Snowflake} channels.commands
- * @property {import("discord.js").Snowflake} channels.modCommands
- * @property {import("discord.js").Snowflake} channels.ignore
+ * @property {import("discord.js").Snowflake[]} channels.commands
+ * @property {import("discord.js").Snowflake[]} channels.modCommands
+ * @property {import("discord.js").Snowflake[]} channels.ignore
  * @property {import("discord.js").Snowflake} channels.log
  * @property {import("discord.js").Snowflake} channels.standard
  * @property {import("discord.js").Snowflake} channels.textVoiceCategory
@@ -18,7 +18,8 @@ import logger from "./logger.js";
  * @property {import("discord.js").Snowflake} channels.voiceCategory
  * @property {import("discord.js").Snowflake} roles.dev
  * @property {import("discord.js").Snowflake} roles.mod
- * @property {import("discord.js").Snowflake} roles.noFilter
+ * @property {import("discord.js").Snowflake} roles.noLinkFilter
+ * @property {import("discord.js").Snowflake} roles.noBlacklist
  * @property {import("discord.js").Snowflake} roles.verified
  * @property {import("discord.js").Snowflake} roles.whitelist.twitch
  * @property {import("discord.js").Snowflake} roles.whitelist.youtube
@@ -47,7 +48,8 @@ export class DiscordConfig {
         this.roles = {
             dev: rawConfig.roles.dev,
             mod: rawConfig.roles.mod,
-            noFilter: rawConfig.roles.noFilter,
+            noLinkFilter: rawConfig.roles.noLinkFilter,
+            noBlacklist: rawConfig.noBlacklist,
             verified: rawConfig.roles.verified,
             whitelist: {
                 youtube: rawConfig.roles.whitelist.youtube,
